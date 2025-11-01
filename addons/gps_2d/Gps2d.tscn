@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://c4dt2sbbesjcj"]
+
+[ext_resource type="Script" uid="uid://tu82wwuf4vam" path="res://addons/gps_2d/Gps2d.gd" id="1_pe4xe"]
+[ext_resource type="Texture2D" uid="uid://o05d41ow0q4a" path="res://addons/gps_2d/iso_diamonds_64_stroked.png" id="2_asqr3"]
+[ext_resource type="Script" uid="uid://dd4at7ccpjyxv" path="res://addons/gps_2d/internal/overlay_tml.gd" id="2_uwl7b"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o06yg"]
+texture = ExtResource("2_asqr3")
+texture_region_size = Vector2i(64, 32)
+0:0/0 = 0
+0:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_nt2lu"]
+tile_shape = 1
+tile_layout = 5
+tile_size = Vector2i(64, 32)
+sources/0 = SubResource("TileSetAtlasSource_o06yg")
+
+[node name="GPS2D" type="Node"]
+script = ExtResource("1_pe4xe")
+
+[node name="Gizmo" type="Node2D" parent="."]
+
+[node name="TML" type="TileMapLayer" parent="."]
+modulate = Color(1, 1, 1, 0.501961)
+tile_set = SubResource("TileSet_nt2lu")
+script = ExtResource("2_uwl7b")

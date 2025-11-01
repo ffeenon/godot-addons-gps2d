@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cj24sdmyetg3l"]
+
+[ext_resource type="Texture2D" uid="uid://dotpmdrtpel2q" path="res://assets/kenney_isometric-miniature-dungeon/Isometric/barrelsStacked_E.png" id="1_jh65p"]
+
+[node name="P" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -163)
+texture = ExtResource("1_jh65p")
