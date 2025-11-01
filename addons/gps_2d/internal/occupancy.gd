@@ -1,20 +1,17 @@
 extends RefCounted
 
 class Occupant:
-	var id: int
 	var instance: Node2D
 	var rect: Rect2i
-
-# ---------------- const ----------------
-const INVALID_ID := -1
+	func _init(_instance: Node2D, _rect: Rect2i) -> void:
+		instance = _instance
+		rect = _rect
 
 # ---------------- data ----------------
-var _cell_to_id: Dictionary[Vector2i, int] = {}    # Vector2i -> id
-var _id_to_occupant: Dictionary[int, Occupant] = {}     # id -> Occupant
-var _id_seq: int = 1
+var _cell_to_occupant: Dictionary[Vector2i, Occupant] = {}    # Vector2i -> Occupant
 
 # ---------------- check funcs ----------------
-func is_cell_free(cell: Vector2i) -> bool: return not _cell_to_id.has(cell)
+func is_cell_free(cell: Vector2i) -> bool: return not _cell_to_occupant.has(cell)
 
 func any_occupied(rect: Rect2i) -> bool:
 	for y in rect.size.y:
@@ -22,87 +19,38 @@ func any_occupied(rect: Rect2i) -> bool:
 		for x in rect.size.x:
 			var gx = rect.position.x + x
 			var cell := Vector2i(gx, gy)
-			if _cell_to_id.has(cell):
+			if _cell_to_occupant.has(cell):
 						return true
 	return false
 
 # ---------------- get funcs ----------------
-func get_id_at(cell: Vector2i) -> int: return _cell_to_id.get(cell, INVALID_ID)
+func has_occupant(occupant: Occupant) -> bool: return get_occupant(occupant.rect.position) == occupant
 
-func get_occupant(id: int) -> Occupant: return _id_to_occupant.get(id, null)
+func get_occupant(cell: Vector2i) -> Occupant: return _cell_to_occupant.get(cell, null)
 
-func get_neighbors(cell: Vector2i) -> Array[int]:
-	var ids: Array[int] = []
+func get_neighbors(cell: Vector2i) -> Array[Occupant]:
+	var occupants: Array[Occupant] = []
 	for d in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
-		var id :int= _cell_to_id.get(cell + d, INVALID_ID)
-		if id != INVALID_ID and not ids.has(id):
-			ids.append(id)
-	return ids
+		var occupant :Occupant = get_occupant(cell + d)
+		if occupant != null and not occupants.has(occupant):
+			occupants.append(occupant)
+	return occupants
 
 # ---------------- operation funcs ----------------
-func add(instance: Node2D, rect:Rect2i) -> Occupant:
-	var occupant := Occupant.new()
-	occupant.id = _id_seq
-	occupant.instance = instance
-	_id_to_occupant.set(occupant.id, occupant)
-	# todo fix	
-	if !any_occupied(rect): 
-		occupant.rect = rect
-		for y in rect.size.y:
-			var gy := rect.position.y + y
-			for x in rect.size.x:
-				var gx = rect.position.x + x
-				var cell := Vector2i(gx, gy)
-				_cell_to_id.set(cell, occupant.id)
-
-	_id_seq += 1
-	return occupant
-
-func remove_at_cell(cell: Vector2i) -> void:
-	if not _cell_to_id.has(cell):
-		return
-	var id := _cell_to_id[cell]
-	destroy_by_id(id)
-
-func detach_by_id(id: int) -> Occupant:
-	if not _id_to_occupant.has(id):
-		return null
-	var occupant: Occupant = _id_to_occupant[id]
-	
+func detach(occupant: Occupant) -> void:	
 	var rect:= occupant.rect
 	for y in rect.size.y:
 		var gy := rect.position.y + y
 		for x in rect.size.x:
 			var gx = rect.position.x + x
 			var cell := Vector2i(gx, gy)
-			_cell_to_id.erase(cell)
+			_cell_to_occupant.erase(cell)
 
-	return occupant
-
-func attach(id: int, rect: Rect2i) -> void:
-	if not _id_to_occupant.has(id):
-		return
-	var occupant :Occupant = _id_to_occupant.get(id)
-	occupant.rect = rect
-	for y in rect.size.y:
-		var gy := rect.position.y + y
-		for x in rect.size.x:
-			var gx = rect.position.x + x
-			var cell := Vector2i(gx, gy)
-			_cell_to_id.set(cell, id)
-
-func destroy_by_id(id: int) -> void:
-	if not _id_to_occupant.has(id):
-		return
-	var occupant: Occupant = _id_to_occupant[id]
+func attach(occupant: Occupant) -> void:
 	var rect := occupant.rect
 	for y in rect.size.y:
 		var gy := rect.position.y + y
 		for x in rect.size.x:
 			var gx = rect.position.x + x
 			var cell := Vector2i(gx, gy)
-			_cell_to_id.erase(cell)
-		
-	if is_instance_valid(occupant.instance):
-		occupant.instance.queue_free()
-	_id_to_occupant.erase(id)
+			_cell_to_occupant.set(cell, occupant)
