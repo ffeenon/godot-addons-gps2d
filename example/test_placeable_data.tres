@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Gps2dPlaceableData" load_steps=3 format=3 uid="uid://c4qcapsobajwa"]
 
-[ext_resource type="PackedScene" uid="uid://cj24sdmyetg3l" path="res://p.tscn" id="1_8sa5s"]
+[ext_resource type="PackedScene" uid="uid://cj24sdmyetg3l" path="res://example/p.tscn" id="1_8sa5s"]
 [ext_resource type="Script" uid="uid://bhggjaok8pvhy" path="res://addons/gps_2d/Gps2dPlaceableData.gd" id="1_8v4ur"]
 
 [resource]

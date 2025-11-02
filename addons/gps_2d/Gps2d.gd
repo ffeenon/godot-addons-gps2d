@@ -3,6 +3,8 @@ class_name Gps2d
 
 # ---------------- external exports/configs ----------------
 @export var _ground:TileMapLayer
+@export var footprint_ok_color := Color(0.2, 1.0, 0.2, 0.5)
+@export var footprint_bad_color := Color(1.0, 0.2, 0.2, 0.5)
 
 # ---------------- exposed signals ----------------
 
@@ -44,8 +46,6 @@ var _occupant:_Occupancy.Occupant:
 			if _occupancy.has_occupant(_occupant): _occupancy.detach(_occupant)
 			_footprint = _occupant.rect
 
-		
-
 var _footprint:Rect2i = _ZERO_RECT: # instance 位置依赖_footprint 更新
 	set(value):
 		if _footprint != value:
@@ -56,7 +56,10 @@ var _footprint:Rect2i = _ZERO_RECT: # instance 位置依赖_footprint 更新
 			if _footprint != _ZERO_RECT:
 				_occupant.instance.global_position = _squre_world_center(_footprint)
 
-			
+# ---------------- init ----------------
+func _ready() -> void:
+	_overlay.setup(_ground, footprint_ok_color, footprint_bad_color)
+
 # ---------------- exposed funcs ----------------
 func add(data: Gps2dPlaceableData, find_free_area := true):
 	_occupant = null

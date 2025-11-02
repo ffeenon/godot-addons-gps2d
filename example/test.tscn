@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://bnvkyjnh8mkmt"]
 
-[ext_resource type="Script" uid="uid://by3crjrgk3sbt" path="res://test.gd" id="1_6uqi0"]
+[ext_resource type="Script" uid="uid://by3crjrgk3sbt" path="res://example/test.gd" id="1_6uqi0"]
 [ext_resource type="PackedScene" uid="uid://c4dt2sbbesjcj" path="res://addons/gps_2d/Gps2d.tscn" id="1_37kl0"]
-[ext_resource type="Resource" uid="uid://c4qcapsobajwa" path="res://test_placeable_data.tres" id="2_ppyta"]
+[ext_resource type="Resource" uid="uid://c4qcapsobajwa" path="res://example/test_placeable_data.tres" id="2_ppyta"]
 [ext_resource type="Texture2D" uid="uid://sur32u6boeq2" path="res://assets/kenney_isometric-miniature-dungeon/Isometric/stoneUneven_E.png" id="3_6uqi0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ppyta"]
