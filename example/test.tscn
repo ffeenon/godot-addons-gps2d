@@ -21,13 +21,12 @@ sources/0 = SubResource("TileSetAtlasSource_ppyta")
 script = ExtResource("1_6uqi0")
 d = ExtResource("2_ppyta")
 
-[node name="GPS2D" parent="." node_paths=PackedStringArray("_ground") instance=ExtResource("1_37kl0")]
-_ground = NodePath("Ground")
-
-[node name="Ground" type="TileMapLayer" parent="GPS2D"]
+[node name="Ground" type="TileMapLayer" parent="."]
 z_index = -1
 tile_map_data = PackedByteArray(0, 0, 255, 255, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
 tile_set = SubResource("TileSet_8uh7m")
+
+[node name="GPS2D" parent="." instance=ExtResource("1_37kl0")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
